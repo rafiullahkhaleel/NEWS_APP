@@ -12,7 +12,18 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-enum FilteredList{bbcNews,aryNews}
+enum FilteredList {
+  bbcNews,
+  aryNews,
+  alJazeera,
+  arabic,
+  cnn,
+  crypto,
+  focus,
+  googleNews,
+  independent,
+}
+
 class _HomeScreenState extends State<HomeScreen> {
   FilteredList? selectedMenu;
 
@@ -37,30 +48,77 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           PopupMenuButton<FilteredList>(
-            onSelected: (FilteredList option){
-              if(option == FilteredList.bbcNews){
+            onSelected: (FilteredList option) {
+              if (option == FilteredList.bbcNews) {
                 name = 'bbc-news';
               }
-              if(option == FilteredList.aryNews){
+              if (option == FilteredList.aryNews) {
                 name = 'ary-news';
+              }
+              if (option == FilteredList.alJazeera) {
+                name = 'al-jazeera-english';
+              }
+              if (option == FilteredList.arabic) {
+                name = 'argaam';
+              }
+              if (option == FilteredList.cnn) {
+                name = 'cnn';
+              }
+              if (option == FilteredList.crypto) {
+                name = 'crypto-coins-news';
+              }
+              if (option == FilteredList.focus) {
+                name = 'focus';
+              }
+              if (option == FilteredList.googleNews) {
+                name = 'google-news';
+              }
+              if (option == FilteredList.independent) {
+                name = 'independent';
               }
               setState(() {
                 selectedMenu = option;
-              });},
+              });
+            },
             initialValue: selectedMenu,
-              itemBuilder: (context){
-                return <PopupMenuEntry<FilteredList>>[
-                  PopupMenuItem<FilteredList>(
-                    value: FilteredList.bbcNews,
-                      child: Text('BBCNews')
-                  ),
-                  PopupMenuItem(
-                      value: FilteredList.aryNews,
-                      child: Text('ARYNews')
-                  )
-                ];
-              }
-          )
+            itemBuilder: (context) {
+              return <PopupMenuEntry<FilteredList>>[
+                PopupMenuItem<FilteredList>(
+                  value: FilteredList.bbcNews,
+                  child: Text('BBCNews'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.aryNews,
+                  child: Text('ARYNews'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.alJazeera,
+                  child: Text('Al-Jazeera'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.arabic,
+                  child: Text('Arabic-News'),
+                ),
+                PopupMenuItem(value: FilteredList.cnn, child: Text('CNN')),
+                PopupMenuItem(
+                  value: FilteredList.crypto,
+                  child: Text('Crypto-Currency'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.focus,
+                  child: Text('Focus-News'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.googleNews,
+                  child: Text('Google-News'),
+                ),
+                PopupMenuItem(
+                  value: FilteredList.independent,
+                  child: Text('Independent'),
+                ),
+              ];
+            },
+          ),
         ],
       ),
       body: ListView(
@@ -82,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: snapshot.data?.articles?.length ?? 0,
                     itemBuilder: (context, index) {
                       final apiData = snapshot.data?.articles?[index];
-                      DateTime dateTime = DateTime.parse(apiData?.publishedAt.toString() ?? '');
+                      DateTime dateTime = DateTime.parse(
+                        apiData?.publishedAt.toString() ?? '',
+                      );
                       return Stack(
                         alignment: Alignment.center,
                         children: [
@@ -107,45 +167,55 @@ class _HomeScreenState extends State<HomeScreen> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: SizedBox(
-                              height: height*.25,
-                              width: width*.8,
+                              height: height * .25,
+                              width: width * .8,
                               child: Card(
                                 color: Colors.white,
                                 child: Padding(
                                   padding: const EdgeInsets.all(15),
                                   child: Column(
                                     children: [
-                                      Text(apiData?.title ?? '',
+                                      Text(
+                                        apiData?.title ?? '',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500
-                                      ),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                       Spacer(),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                        Text(apiData?.source?.name.toString() ?? '',
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                          Expanded(
+                                            child: Text(
+                                              apiData?.source?.name
+                                                      .toString() ??
+                                                  '',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        Text(format.format(dateTime),
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                          SizedBox(width: width * .05),
+                                          Text(
+                                            format.format(dateTime),
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
-                                        )
-                                      ],)
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       );
                     },
