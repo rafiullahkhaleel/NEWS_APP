@@ -12,8 +12,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+enum FilteredList{bbcNews,aryNews}
 class _HomeScreenState extends State<HomeScreen> {
+  FilteredList? selectedMenu;
+
   final format = DateFormat('MMMM dd,yyyy');
+  String name = 'bbc-news';
   BBCChannelService bbcNews = BBCChannelService();
   @override
   Widget build(BuildContext context) {
@@ -31,13 +35,40 @@ class _HomeScreenState extends State<HomeScreen> {
           style: GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
+        actions: [
+          PopupMenuButton<FilteredList>(
+            onSelected: (FilteredList option){
+              if(option == FilteredList.bbcNews){
+                name = 'bbc-news';
+              }
+              if(option == FilteredList.aryNews){
+                name = 'ary-news';
+              }
+              setState(() {
+                selectedMenu = option;
+              });},
+            initialValue: selectedMenu,
+              itemBuilder: (context){
+                return <PopupMenuEntry<FilteredList>>[
+                  PopupMenuItem<FilteredList>(
+                    value: FilteredList.bbcNews,
+                      child: Text('BBCNews')
+                  ),
+                  PopupMenuItem(
+                      value: FilteredList.aryNews,
+                      child: Text('ARYNews')
+                  )
+                ];
+              }
+          )
+        ],
       ),
       body: ListView(
         children: [
           SizedBox(
             height: height * .55,
             child: FutureBuilder(
-              future: bbcNews.getData(),
+              future: bbcNews.getData(name),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SpinKitCircle(color: Colors.blueAccent);
