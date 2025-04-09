@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../services/bbc_channel_service.dart';
+import '../services/news_channel_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final format = DateFormat('MMMM dd,yyyy');
   String name = 'bbc-news';
-  BBCChannelService bbcNews = BBCChannelService();
+  NewsService bbcNews = NewsService();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: height * .55,
             child: FutureBuilder(
-              future: bbcNews.getData(name),
+              future: bbcNews.getChannelData(name),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SpinKitCircle(color: Colors.blueAccent);
