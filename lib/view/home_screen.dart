@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:news_app/models/bbc_news_channel_model.dart';
+import 'package:news_app/view/categories_screen.dart';
+import '../models/categries_news_model.dart';
 import '../services/news_channel_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,7 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context)=>CategoriesScreen()));
+          },
           icon: Image.asset('assets/category_icon.png', height: 25, width: 25),
         ),
         title: Text(
@@ -125,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           SizedBox(
             height: height * .55,
-            child: FutureBuilder(
+            child: FutureBuilder<BBCNewsChannelModel>(
               future: bbcNews.getChannelData(name),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -223,6 +229,97 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
+          ),
+          FutureBuilder<CategoriesNewsModel>(
+            future: bbcNews.getCategoriesData('General'),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: SpinKitCircle(color: Colors.blueAccent));
+              } else if (snapshot.hasError) {
+                return Text('ERROR ${snapshot.hasError}');
+              } else if (!snapshot.hasData) {
+                return Text('No Data Available');
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data?.articles?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    final apiData = snapshot.data?.articles?[index];
+                    DateTime dateTime = DateTime.parse(
+                      apiData?.publishedAt ?? '',
+                    );
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: CachedNetworkImage(
+                              imageUrl: apiData?.urlToImage ?? '',
+                              width: width * .3,
+                              height: height * .2,
+                              fit: BoxFit.cover,
+                              placeholder:
+                                  (context, url) =>
+                                  SpinKitCircle(color: Colors.blueAccent),
+                              errorWidget: (context, url, error) {
+                                return Icon(Icons.error, color: Colors.red);
+                              },
+                            ),
+                          ),
+                          SizedBox(width: width * .025),
+                          Expanded(
+                            child: SizedBox(
+                              height: height * .2,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    apiData?.title ?? '',
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          apiData?.source?.name ?? '',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        format.format(dateTime),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
         ],
       ),
