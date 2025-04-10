@@ -75,7 +75,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             future: bbcNews.getCategoriesData(category),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: SpinKitCircle(color: Colors.blueAccent));
+                return Center(child: Column(
+                  children: [
+                    SizedBox(
+                      height: height*.35,
+                    ),
+                    SpinKitCircle(color: Colors.blueAccent),
+                  ],
+                ));
               } else if (snapshot.hasError) {
                 return Text('ERROR ${snapshot.hasError}');
               } else if (!snapshot.hasData) {
@@ -110,7 +117,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 child: CachedNetworkImage(
                                   imageUrl: apiData?.urlToImage ?? '',
                                   width: width * .3,
-                                  height: height * .2,
+                                  height: height * .16,
                                   fit: BoxFit.cover,
                                   placeholder:
                                       (context, url) =>
@@ -123,7 +130,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               SizedBox(width: width * .025),
                               Expanded(
                                 child: SizedBox(
-                                  height: height * .2,
+                                  height: height * .16,
                                   child: Column(
                                     children: [
                                       Text(

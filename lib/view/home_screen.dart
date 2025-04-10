@@ -284,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: apiData?.urlToImage ?? '',
                                 width: width * .3,
-                                height: height * .2,
+                                height: height * .16,
                                 fit: BoxFit.cover,
                                 placeholder:
                                     (context, url) =>
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(width: width * .025),
                             Expanded(
                               child: SizedBox(
-                                height: height * .2,
+                                height: height * .16,
                                 child: Column(
                                   children: [
                                     Text(
