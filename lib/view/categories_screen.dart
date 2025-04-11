@@ -35,6 +35,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -61,8 +63,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     decoration: BoxDecoration(
                       color:
                           category == selectedCategory[index]
-                              ? Colors.blueAccent
-                              : Colors.blueGrey,
+                              ? Colors.blueAccent.shade700
+                              : Colors.blueGrey.shade300,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(child: Text(selectedCategory[index])),
@@ -107,7 +109,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     title: apiData?.title ?? '',
                                     timeDate: apiData?.publishedAt ?? '',
                                     description: apiData?.description ?? '',
-                                    content: apiData?.content ?? ''
+                                    content: apiData?.content ?? '',
                                 )));
                           },
                           child: Row(
@@ -135,7 +137,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     children: [
                                       Text(
                                         apiData?.title ?? '',
-                                        maxLines: 3,
+                                        maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.poppins(
                                           fontSize: 17,
@@ -158,12 +160,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                               ),
                                             ),
                                           ),
-                                          Text(
-                                            form.format(dateTime),
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
+                                          Expanded(
+                                            child: Text(
+                                              form.format(dateTime),
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],

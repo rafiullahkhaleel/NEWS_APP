@@ -96,6 +96,17 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 15,
               ),
+            ),
+            SizedBox(height: height*.015,),
+            Row(
+              children: [
+                Text('For More Detail  ',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             )
           ],
         ),

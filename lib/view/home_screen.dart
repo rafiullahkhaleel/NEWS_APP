@@ -159,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   title: apiData?.title ?? '',
                                   timeDate: apiData?.publishedAt ?? '',
                                   description: apiData?.description ?? '',
-                                  content: apiData?.content ?? ''
+                                  content: apiData?.content ?? '',
+
                               )));
                         },
                         child: Stack(
@@ -272,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 title: apiData?.title ?? '',
                                 timeDate: apiData?.publishedAt ?? '',
                                 description: apiData?.description ?? '',
-                                content: apiData?.content ?? ''
+                                content: apiData?.content ?? '',
                             )));
                       },
                       child: Padding(
@@ -302,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Text(
                                       apiData?.title ?? '',
-                                      maxLines: 3,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.poppins(
                                         fontSize: 17,
@@ -325,12 +326,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                         ),
-                                        Text(
-                                          format.format(dateTime),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
+                                        Expanded(
+                                          child: Text(
+                                            format.format(dateTime),
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
                                           ),
                                         ),
                                       ],
